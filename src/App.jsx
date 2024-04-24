@@ -44,7 +44,7 @@ const FaceDetection = () => {
         ctx.lineWidth = "1";
         ctx.strokeStyle = "green";
         ctx.rect(
-          pred.topLeft[0],
+          pred.topLeft[0] - 30,
           pred.topLeft[1] - 120,
           pred.bottomRight[0] - pred.topLeft[0] + 20,
           pred.bottomRight[1] - pred.topLeft[1],
@@ -53,7 +53,7 @@ const FaceDetection = () => {
 
         ctx.fillStyle = "cyan";
         pred.landmarks.forEach((landmark) => {
-          ctx.fillRect(landmark[0]-100, landmark[1]-50, 5, 5);
+          ctx.fillRect(landmark[0], landmark[1]-120, 5, 5);
         });
 
         const image = new Image();
@@ -70,7 +70,7 @@ const FaceDetection = () => {
           (pred.bottomRight[1] - pred.topLeft[1]) / 2 -
           image.height / 2;
 
-        ctx.drawImage(image, imageX - 50, imageY + 50, imageWidth + 120 , imageHeight + 20);
+        ctx.drawImage(image, imageX - 50, imageY + 50, imageWidth + 150 , imageHeight + 20);
         ctx.restore();
       });
     };
