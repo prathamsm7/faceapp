@@ -61,7 +61,6 @@ function App() {
 
       if(!detections.length){
         counter = 0
-        clearInterval(intervalId)
         return false
       }
 
@@ -107,7 +106,7 @@ function App() {
           }
         }
       });
-    }, 10);
+    }, 0);
   };
 
   const takeSnapshot = () => {
