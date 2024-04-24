@@ -70,7 +70,7 @@ const FaceDetection = () => {
           (pred.bottomRight[1] - pred.topLeft[1]) / 2 -
           image.height / 2;
 
-        ctx.drawImage(image, imageX, imageY + 125, imageWidth, imageHeight);
+        ctx.drawImage(image, imageX + 50, imageY + 50, imageWidth , imageHeight);
         ctx.restore();
       });
     };
