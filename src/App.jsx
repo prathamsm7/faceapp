@@ -45,8 +45,8 @@ const FaceDetection = () => {
         ctx.strokeStyle = "green";
         ctx.rect(
           pred.topLeft[0] + 20,
-          pred.topLeft[1] - 80,
-          pred.bottomRight[0] - pred.topLeft[0],
+          pred.topLeft[1] - 100,
+          pred.bottomRight[0] - pred.topLeft[0] + 20,
           pred.bottomRight[1] - pred.topLeft[1],
         );
         ctx.stroke();
@@ -70,7 +70,7 @@ const FaceDetection = () => {
           (pred.bottomRight[1] - pred.topLeft[1]) / 2 -
           image.height / 2;
 
-        ctx.drawImage(image, imageX -100, imageY + 50, imageWidth + 100 , imageHeight);
+        ctx.drawImage(image, imageX + 20, imageY + 50, imageWidth + 120 , imageHeight + 20);
         ctx.restore();
       });
     };
