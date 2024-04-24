@@ -45,7 +45,7 @@ const FaceDetection = () => {
         ctx.strokeStyle = "green";
         ctx.rect(
           pred.topLeft[0] + 20,
-          pred.topLeft[1] - 50,
+          pred.topLeft[1] - 80,
           pred.bottomRight[0] - pred.topLeft[0],
           pred.bottomRight[1] - pred.topLeft[1],
         );
