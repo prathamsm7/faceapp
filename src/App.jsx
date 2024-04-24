@@ -111,8 +111,8 @@ const FaceDetection = () => {
         ></video>
         <canvas
           id="canvas"
-          width="600px"
-          height="400px"
+          width="400"
+          height="400"
           ref={canvasRef}
         ></canvas>
       </div>
