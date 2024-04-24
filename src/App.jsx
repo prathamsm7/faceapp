@@ -210,12 +210,11 @@ function App() {
         return response.data; // Return the response data
       })
       .then((data) => {
-        alert("here axios")
 
         // console.log("Success:", data);
         const { stage = "", Clarity = "" } = data?.data || {};
         result = data?.data
-        alert(JSON.stringify(data.data))
+        alert(stage || Clarity)
         
         setStatus(stage || Clarity);
         sendImage(croppedHairCanvas,result,webhookform,url)
