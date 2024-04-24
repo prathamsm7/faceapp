@@ -197,31 +197,32 @@ function App() {
       formData.append("category", "wdv");
       formData.append("userId", "50000625");
       formData.append("appointmentId", "2");
-
+      alert("here axios")
       axios
-        .post("https://stg.api.mosaicwellness.in/doctrina/predict", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          // Set withCredentials to true if you need to send cookies or other credentials
-          withCredentials: false,
-        })
-        .then((response) => {
-          // console.log("🚀 ~ response:", response);
-          return response.data; // Return the response data
-        })
-        .then((data) => {
-          // console.log("Success:", data);
-          const { stage = "", Clarity = "" } = data?.data || {};
-          result = data?.data
-          alert(JSON.stringify(data.data))
-          setStatus(stage || Clarity);
-          sendImage(croppedHairCanvas,result,webhookform,url)
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      .post("https://stg.api.mosaicwellness.in/doctrina/predict", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        // Set withCredentials to true if you need to send cookies or other credentials
+        withCredentials: false,
+      })
+      .then((response) => {
+        // console.log("🚀 ~ response:", response);
+        return response.data; // Return the response data
+      })
+      .then((data) => {
+        // console.log("Success:", data);
+        const { stage = "", Clarity = "" } = data?.data || {};
+        result = data?.data
+        alert(JSON.stringify(data.data))
+        setStatus(stage || Clarity);
+        sendImage(croppedHairCanvas,result,webhookform,url)
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     }, "image/png");
+
 
   };
 
