@@ -214,10 +214,12 @@ function App() {
         // console.log("Success:", data);
         const { stage = "", Clarity = "" } = data?.data || {};
         result = data?.data
-        alert(stage || Clarity)
-        
-        setStatus(stage || Clarity);
         sendImage(croppedHairCanvas,result,webhookform,url)
+        setTimeout(() => {
+          setStatus(stage || Clarity);
+          alert(stage || Clarity)
+        }, 1000);
+        
       })
       .catch((error) => {
         console.error("Error:", error);
