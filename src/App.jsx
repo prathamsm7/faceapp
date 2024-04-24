@@ -118,12 +118,12 @@ function App() {
     const img = document.getElementById("img");
     let imagedata = canvas.toDataURL("image/webp");
     // img.style.transform = "scaleX(-1)";
-    setCapturedImage(imagedata);
+    // setCapturedImage(imagedata);
     submitImage(imagedata);
-    clearInterval(intervalId);
+    // clearInterval(intervalId);
     setRetry(false);
     setIsLoading(false);
-    img.src = imagedata;
+    // img.src = imagedata;
   };
 
   const retakeSnapshot = () => {
