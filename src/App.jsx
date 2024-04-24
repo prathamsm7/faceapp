@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as faceapi from "face-api.js";
-import { captureImage } from "./utilities";
+import {drawOval, isFaceInside } from "./utilities";
 import axios from "axios";
 
 function App() {
@@ -10,8 +10,6 @@ function App() {
   const canvasRefOval = useRef();
   let counter = 0;
   let intervalId;
-  const OVAL_LEFT_X = 190;
-  const OVAL_RIGHT_X = 445;
   const [capturedImage, setCapturedImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [landmarks, setLandmarks] = useState({});
@@ -20,8 +18,9 @@ function App() {
 
   // LOAD FROM USEEFFECT
   useEffect(() => {
-    startVideo();
-    videoRef && loadModels();
+    loadModels();
+    // videoRef.current && startVideo();
+
   }, []);
 
   // OPEN YOU FACE WEBCAM
@@ -45,19 +44,26 @@ function App() {
       // THIS FOR FACE DETECT AND LOAD FROM YOU PUBLIC/MODELS DIRECTORY
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-    ]).then(() => {
+      // faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+    ]).then((res) => {
+      startVideo();
       faceMyDetect();
     });
   };
 
   const faceMyDetect = async () => {
+    counter = 0;
     intervalId = setInterval(async () => {
-      counter = 0;
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks();
+        .withFaceLandmarks()
       // .withFaceExpressions();
+
+      if(!detections.length){
+        counter = 0
+        clearInterval(intervalId)
+        return false
+      }
 
       // DRAW YOU FACE IN WEBCAM
       canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
@@ -76,7 +82,7 @@ function App() {
       // faceapi.draw.drawDetections(canvasRef.current, resized);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
       // faceapi.draw.drawFaceExpressions(canvasRef.current, resized, 1);
-      setIsLoading(false);
+      // setIsLoading(false);
 
       const faceDimensions = detections.map((detection) => {
         const { landmarks } = detection;
@@ -87,7 +93,7 @@ function App() {
         const { x: leftFaceX } = leftEye[0];
         const { x: rightFaceX } = rightEye[0];
 
-        isFaceInside(leftFaceX, rightFaceX) && counter++;
+        isFaceInside(leftFaceX, rightFaceX) && counter++;  
         if (
           resized.length > 0 &&
           resized[0].detection.score > 0.75 &&
@@ -99,49 +105,7 @@ function App() {
           }
         }
       });
-    }, 0);
-  };
-
-  const drawOval = (ctx, canvas) => {
-    var width = 160; // Width of the face oval
-    var height = 100; // Height of the face oval
-
-    // Set line color and width
-    ctx.strokeStyle = "aqua";
-    ctx.lineWidth = 1;
-
-    var centerX = canvas.width / 2;
-    var centerY = canvas.height / 2;
-    var radiusX = width / 2;
-    var radiusY = height / 2;
-
-    ctx.beginPath();
-    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Create a filled rectangle with a clear circle in the middle
-    ctx.fillStyle = "rgba(102, 153, 204,0.7)"; // semi-transparent blue
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = "destination-out"; // Create hole in the overlay
-    ctx.arc(320, 250, 50, 0, 2 * Math.PI); // Adjust circle position and size as needed
-    ctx.fill();
-
-    // Reset to default to ensure subsequent drawing operations are visible
-    ctx.globalCompositeOperation = "source-over";
-  };
-
-  const isFaceInside = (leftFaceX, rightFaceX) => {
-    return leftFaceX > OVAL_LEFT_X && rightFaceX < OVAL_RIGHT_X;
-  };
-
-  const handleMouseMove = (event) => {
-    // console.log("Mouse event");
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    // setCoordinates({ x, y });
-    // console.log({ x, y });
+    }, 10);
   };
 
   const takeSnapshot = () => {
@@ -150,15 +114,15 @@ function App() {
     canvas.height = 450;
     canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
 
-    const img = document.createElement("img");
+    const img = document.getElementById("img");
     let imagedata = canvas.toDataURL("image/webp");
-    // img.src = imagedata;
     // img.style.transform = "scaleX(-1)";
     setCapturedImage(imagedata);
     submitImage(imagedata);
     clearInterval(intervalId);
     setRetry(false);
     setIsLoading(false);
+    img.src = imagedata;
   };
 
   const retakeSnapshot = () => {
@@ -237,7 +201,7 @@ function App() {
             "Content-Type": "multipart/form-data",
           },
           // Set withCredentials to true if you need to send cookies or other credentials
-          withCredentials: true,
+          withCredentials: false,
         })
         .then((response) => {
           // console.log("🚀 ~ response:", response);
@@ -247,6 +211,7 @@ function App() {
           // console.log("Success:", data);
           const { stage = "", Clarity = "" } = data?.data || {};
           result = data?.data
+          alert(JSON.stringify(data.data))
           setStatus(stage || Clarity);
           sendImage(croppedHairCanvas,result,webhookform,url)
         })
@@ -317,10 +282,9 @@ function App() {
             width: "430px",
             height: "480px",
           }}
-          onClick={handleMouseMove}
         />
         <div id="screenshot">
-          {capturedImage && <img id="img" src={capturedImage} />}
+          { <img id="img"/>}
         </div>
       </div>
       <p>{isLoading ? "....Loading" : "Now you can capture snap"}</p>
