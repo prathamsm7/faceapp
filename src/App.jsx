@@ -72,12 +72,12 @@ function App() {
       );
       faceapi.matchDimensions(canvasRef.current, {
         width: 430,
-        height: 480,
+        height: 430,
       });
 
       const resized = faceapi.resizeResults(detections, {
         width: 430,
-        height: 480,
+        height: 430,
       });
 
       // faceapi.draw.drawDetections(canvasRef.current, resized);
@@ -197,7 +197,6 @@ function App() {
       formData.append("category", "wdv");
       formData.append("userId", "50000625");
       formData.append("appointmentId", "2");
-      alert("here axios")
       axios
       .post("https://stg.api.mosaicwellness.in/doctrina/predict", formData, {
         headers: {
@@ -211,10 +210,13 @@ function App() {
         return response.data; // Return the response data
       })
       .then((data) => {
+        alert("here axios")
+
         // console.log("Success:", data);
         const { stage = "", Clarity = "" } = data?.data || {};
         result = data?.data
         alert(JSON.stringify(data.data))
+        
         setStatus(stage || Clarity);
         sendImage(croppedHairCanvas,result,webhookform,url)
       })
