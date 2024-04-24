@@ -109,6 +109,7 @@ function App() {
   };
 
   const takeSnapshot = () => {
+    alert("taking picture")
     const canvas = document.createElement("canvas");
     canvas.width = 430 + 190;
     canvas.height = 450;
@@ -134,6 +135,8 @@ function App() {
   };
 
   const submitImage = async (data) => {
+    alert("submitting picture")
+
     const url = "https://webhook.site/7f7a2a6e-2a30-4519-a030-2763e016dc76";
 
     const formData = new FormData();
