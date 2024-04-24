@@ -102,11 +102,10 @@ function App() {
         ) {
           if (counter >= 10) {
             setIsLoading(false);
-            clearInterval(intervalId);
           }
         }
       });
-    }, 0);
+    }, 100);
   };
 
   const takeSnapshot = () => {
