@@ -65,6 +65,8 @@ function App() {
         return false
       }
 
+      setIsLoading(false)
+
       // DRAW YOU FACE IN WEBCAM
       canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
         videoRef.current
