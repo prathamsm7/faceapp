@@ -1,11 +1,14 @@
 .appvide{
   display: flex;
   align-items: center;
+  position: relative;
+  justify-content: center;
+  width: 430;
 }
 
 .appcanvas{
   position: absolute;
-  top: 100px
+  /* top: 100px */
 }
 
 .myapp{
@@ -14,5 +17,17 @@
   height: 100vh;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+#screenshot{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#img{
+  width: 430px;
+  height: 480px;
+  transform:scaleX(-1)
 }
