@@ -72,7 +72,7 @@ function App() {
       );
       faceapi.matchDimensions(canvasRef.current, {
         width: 430,
-        height: 430,
+        height: 480,
       });
 
       const resized = faceapi.resizeResults(detections, {
@@ -82,6 +82,7 @@ function App() {
 
       // faceapi.draw.drawDetections(canvasRef.current, resized);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
+      
       // faceapi.draw.drawFaceExpressions(canvasRef.current, resized, 1);
       // setIsLoading(false);
 
@@ -106,6 +107,8 @@ function App() {
         }
       });
     }, 100);
+
+    return ()=> clearInterval(intervalId)
   };
 
   const takeSnapshot = () => {
@@ -197,6 +200,8 @@ function App() {
       formData.append("category", "wdv");
       formData.append("userId", "50000625");
       formData.append("appointmentId", "2");
+      setStatus("stage 2");
+
       axios
       .post("https://stg.api.mosaicwellness.in/doctrina/predict", formData, {
         headers: {
@@ -215,10 +220,10 @@ function App() {
         const { stage = "", Clarity = "" } = data?.data || {};
         result = data?.data
         sendImage(croppedHairCanvas,result,webhookform,url)
-        setTimeout(() => {
-          setStatus(stage || Clarity);
-          alert(stage || Clarity)
-        }, 1000);
+        // setTimeout(() => {
+          // setStatus(stage || Clarity);
+          // alert(stage || Clarity)
+        // }, 1000);
         
       })
       .catch((error) => {
