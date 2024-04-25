@@ -12,7 +12,7 @@ const FaceDetection = () => {
     const setupCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 600, height: 400 },
+          video: { width: 1080 , height: 1920 },
           audio: false,
         });
         if (videoRef.current) {
@@ -56,8 +56,6 @@ const FaceDetection = () => {
           ctx.fillRect(landmark[0], landmark[1]-120, 5, 5);
         });
 
-        const image = new Image();
-        image.src = imagesrc;
 
         const imageWidth = (pred.bottomRight[0] - pred.topLeft[0]) * 1.1;
         const imageHeight = image.height * (imageWidth / image.width);
@@ -74,6 +72,9 @@ const FaceDetection = () => {
         ctx.restore();
       });
     };
+
+    const image = new Image();
+    image.src = imagesrc;
 
     const loadModel = async () => {
       model = await blazeface.load();
@@ -111,8 +112,8 @@ const FaceDetection = () => {
         ></video>
         <canvas
           id="canvas"
-          width="400"
-          height="400"
+          width="1080"
+          height="1920"
           ref={canvasRef}
         ></canvas>
       </div>
